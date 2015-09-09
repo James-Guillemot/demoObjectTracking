@@ -17,7 +17,7 @@ import gab.opencv.*;//import OpenCV library for computer vision functionality
 import processing.video.*;//import video handling capabilities   
 import surf.*;//import SURF feature identification
 import java.awt.Rectangle;//import additional rectangle capabilities
-//end of imports and notes
+//end of import1s and notes
 //********************************************************
  
 Capture video;//video capture object
@@ -27,6 +27,8 @@ PImage src;//source image to provide detection - each frame is put into this
 //ArrayList<Integer> colours;//***would be used for a larger # of colours
 int maxColours = 8;//**SET MAX COLOURS to detect
 ArrayList<Contour>[] contours = new ArrayList[maxColours];//detection contours arraylist
+ArrayList<Contour>[] sampleContours = new ArrayList[maxColours];//detection contours arraylist
+
 boolean contoursNotEmpty[] = new boolean[maxColours];
 PVector points[] = new PVector[maxColours];
 
@@ -123,10 +125,16 @@ void detectColours() {//detect chosen colours
     contoursNotEmpty[i] = false;//tell the program that this is an empty contour list (default value)
 
     if (outputs[i] != null) {//if there is a colour selected to detect at position i 
-    //***THIS IS WHERE FURTHER RECOGNITION NEEDS TO TAKE PLACE
+    //***THIS IS WHERE FURTHER RECOGNITION NEEDS TO TAKE PLACE   
       opencv.loadImage(outputs[i]);//load the output image from the array
+      
       contours[i] = opencv.findContours(true,true);//find the contours of the objects.. passing 'true' sorts them by descending area.
       contoursNotEmpty[i] = true;//tell the program that contours have been found - the list won't be empty
+   //***NEW STUFF HERE   
+      opencv.loadImage("sample.png");
+      sampleContours[i]=opencv.findContours(true,true);
+      float compare = opencv.matchShapes(contours[i], sampleContours[i],1,0.0);
+ //***END OF NEW STUFF
     }
   }
 }//end of detectColours
