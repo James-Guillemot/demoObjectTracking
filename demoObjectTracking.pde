@@ -14,9 +14,9 @@
  *  - Look for *** to find areas noted.
  */
 import gab.opencv.*;//import OpenCV library for computer vision functionality
-import processing.video.*;//import video handling capabilities                                                                                                                                                 
+import processing.video.*;//import video handling capabilities   
+import surf.*;//import SURF feature identification
 import java.awt.Rectangle;//import additional rectangle capabilities
-import javax.swing.JOptionPane; 
 //end of imports and notes
 //********************************************************
  
@@ -120,10 +120,10 @@ void detectColours() {//detect chosen colours
     //***TO DO: Add here some image filtering to detect blobs better***
     
     outputs[i] = opencv.getSnapshot();//save the output to the corresponding array item
-  
     contoursNotEmpty[i] = false;//tell the program that this is an empty contour list (default value)
 
     if (outputs[i] != null) {//if there is a colour selected to detect at position i 
+    //***THIS IS WHERE FURTHER RECOGNITION NEEDS TO TAKE PLACE
       opencv.loadImage(outputs[i]);//load the output image from the array
       contours[i] = opencv.findContours(true,true);//find the contours of the objects.. passing 'true' sorts them by descending area.
       contoursNotEmpty[i] = true;//tell the program that contours have been found - the list won't be empty
@@ -135,12 +135,12 @@ void detectColours() {//detect chosen colours
 void displayContourBoxes() {//display the contour surrounding boxes for each colour chosen.
   for (int i=0; i < maxColours; i++){//for each colour 
     if (contoursNotEmpty[i] && !contours[i].isEmpty()){//if there are detected contours
-      //for (int j=0; j < contours[i].size(); j++) {//find contours ** DEPRECATED only largest contour is needed.
-        //Contour contour = contours[i].get(j);//backup ** DEPRECATED only largest contour is needed.
-        Contour contour = contours[i].get(0);//get the largest detected contour
+      for (int j=0; j < contours[i].size(); j++) {//find contours ** DEPRECATED if only largest contour is needed.
+        Contour contour = contours[i].get(j);//** DEPRECATED if only largest contour is needed.
+        //Contour contour = contours[i].get(0);//get the largest detected contour only
         Rectangle r = contour.getBoundingBox();//find the rectangle tightly fitting the contour
         
-        if (r.width < 8 || r.height < 8 || r.width > 175 || r.height > 175){continue;}//IGNORE THE CONTOUR IF TOO BIG OR TOO SMALL
+        if (r.width < 10 || r.height < 10 || r.width > 200 || r.height > 200){continue;}//IGNORE THE CONTOUR IF TOO BIG OR TOO SMALL
         
         fill(255);//set the fill colour to white for following drawing
         //println("point " + i+1 + " centre x: " + (r.x + r.width/2) + ", y: " + (r.y + r.height/2));//CONSOLE DISPLAY OF POSITIONS *debugging only
@@ -150,9 +150,9 @@ void displayContourBoxes() {//display the contour surrounding boxes for each col
         fill(colours[i], 180);//set fill to transparent version of colour i
         strokeWeight(3);//stroke (line) weight to 3px
         rect(r.x, r.y, r.width, r.height);//draw the surrounding rectangle of i contour
-      } 
-  //}//DEPRECATED FOR LOOP brace
-  }
+      }//FOR LOOP j brace 
+    }
+  }//FOR LOOP i brace
 }//end of displayContourBoxes
 //********************************************************
 
