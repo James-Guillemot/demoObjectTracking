@@ -130,11 +130,11 @@ void detectColours() {//detect chosen colours
       
       contours[i] = opencv.findContours(true,true);//find the contours of the objects.. passing 'true' sorts them by descending area.
       contoursNotEmpty[i] = true;//tell the program that contours have been found - the list won't be empty
-   //***NEW STUFF HERE   
+      //***NEW STUFF HERE   
       //opencv.loadImage("sample.png");
       //sampleContours[i]=opencv.findContours(true,true);
       //float compare = opencv.matchShapes(contours[i], sampleContours[i],1,0.0);//not compatible with OpenCV for (processing)
- //***END OF NEW STUFF
+      //***END OF NEW STUFF
     }
   }
 }//end of detectColours
@@ -143,9 +143,9 @@ void detectColours() {//detect chosen colours
 void displayContourBoxes() {//display the contour surrounding boxes for each colour chosen.
   for (int i=0; i < maxColours; i++){//for each colour 
     if (contoursNotEmpty[i] && !contours[i].isEmpty()){//if there are detected contours
-      for (int j=0; j < contours[i].size(); j++) {//find contours ** DEPRECATED if only largest contour is needed.
-        Contour contour = contours[i].get(j);//** DEPRECATED if only largest contour is needed.
-        //Contour contour = contours[i].get(0);//get the largest detected contour only
+      //for (int j=0; j < contours[i].size(); j++) {//find contours ** DEPRECATED if only largest contour is needed.
+        //Contour contour = contours[i].get(j);//** DEPRECATED if only largest contour is needed.
+        Contour contour = contours[i].get(0);//get the largest detected contour only
         Rectangle r = contour.getBoundingBox();//find the rectangle tightly fitting the contour
         
         if (r.width < 20 || r.height < 20 || r.width > 220 || r.height > 220){continue;}//IGNORE THE CONTOUR IF TOO BIG OR TOO SMALL
@@ -158,7 +158,7 @@ void displayContourBoxes() {//display the contour surrounding boxes for each col
         fill(colours[i], 180);//set fill to transparent version of colour i
         strokeWeight(3);//stroke (line) weight to 3px
         rect(r.x, r.y, r.width, r.height);//draw the surrounding rectangle of i contour
-      }//FOR LOOP j brace 
+      //}//FOR LOOP j brace 
     }
   }//FOR LOOP i brace
 }//end of displayContourBoxes
