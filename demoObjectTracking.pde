@@ -131,9 +131,9 @@ void detectColours() {//detect chosen colours
       contours[i] = opencv.findContours(true,true);//find the contours of the objects.. passing 'true' sorts them by descending area.
       contoursNotEmpty[i] = true;//tell the program that contours have been found - the list won't be empty
    //***NEW STUFF HERE   
-      opencv.loadImage("sample.png");
-      sampleContours[i]=opencv.findContours(true,true);
-      float compare = opencv.matchShapes(contours[i], sampleContours[i],1,0.0);
+      //opencv.loadImage("sample.png");
+      //sampleContours[i]=opencv.findContours(true,true);
+      //float compare = opencv.matchShapes(contours[i], sampleContours[i],1,0.0);//not compatible with OpenCV for (processing)
  //***END OF NEW STUFF
     }
   }
@@ -148,7 +148,7 @@ void displayContourBoxes() {//display the contour surrounding boxes for each col
         //Contour contour = contours[i].get(0);//get the largest detected contour only
         Rectangle r = contour.getBoundingBox();//find the rectangle tightly fitting the contour
         
-        if (r.width < 10 || r.height < 10 || r.width > 200 || r.height > 200){continue;}//IGNORE THE CONTOUR IF TOO BIG OR TOO SMALL
+        if (r.width < 20 || r.height < 20 || r.width > 220 || r.height > 220){continue;}//IGNORE THE CONTOUR IF TOO BIG OR TOO SMALL
         
         fill(255);//set the fill colour to white for following drawing
         //println("point " + i+1 + " centre x: " + (r.x + r.width/2) + ", y: " + (r.y + r.height/2));//CONSOLE DISPLAY OF POSITIONS *debugging only
